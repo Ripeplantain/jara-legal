@@ -1,0 +1,263 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * jara-legal design tokens. Spec and usage rules: docs/design-system.md.
+ * Raw palette lives on :root; semantic tokens (shadcn names + our additions)
+ * point at it and are swapped for dark mode under .dark.
+ */
+
+/* .light forces the light palette inside a dark page (used by /design). */
+@custom-variant dark (&:is(.dark *):not(.light, .light *));
+
+@theme inline {
+  /* Fonts (loaded with next/font in app/layout.tsx) */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --font-display: var(--font-instrument-serif);
+
+  /* Type scale additions — Tailwind's xs/sm/base/lg stay as-is */
+  --text-display: 2.75rem;
+  --text-display--line-height: 3rem;
+  --text-display--letter-spacing: -0.01em;
+  --text-title: 2rem;
+  --text-title--line-height: 2.5rem;
+  --text-title--letter-spacing: -0.005em;
+  --text-section: 1.5rem;
+  --text-section--line-height: 2rem;
+
+  /* shadcn semantic colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* jara additions */
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-bubble-user: var(--bubble-user);
+  --color-bubble-user-foreground: var(--bubble-user-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius: base 12px, soft but not pill-shaped */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Shadows: warm-tinted, low opacity */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+}
+
+:root {
+  /* Raw palette — reference these only from the semantic tokens below */
+  --teal-50: #eef7f6;
+  --teal-100: #d5ece9;
+  --teal-200: #aad8d2;
+  --teal-300: #75bdb4;
+  --teal-400: #3f9c92;
+  --teal-500: #1f7f76;
+  --teal-600: #14675f;
+  --teal-700: #10534d;
+  --teal-800: #0e433f;
+  --teal-900: #10302d;
+  --teal-950: #062220;
+
+  --saffron-50: #fff8eb;
+  --saffron-100: #fdebc8;
+  --saffron-200: #fbd58d;
+  --saffron-300: #f8ba4f;
+  --saffron-400: #f5a524;
+  --saffron-500: #e08a0b;
+  --saffron-600: #b86a06;
+  --saffron-700: #8a4f00;
+
+  --stone-0: #ffffff;
+  --stone-25: #fcfbf8;
+  --stone-50: #f7f5f0;
+  --stone-100: #efece5;
+  --stone-200: #e3dfd6;
+  --stone-300: #cdc7bb;
+  --stone-400: #a59e91;
+  --stone-500: #8f887b;
+  --stone-550: #6e675c;
+  --stone-600: #5e584e;
+  --stone-700: #47423a;
+  --stone-800: #2f2b26;
+  --stone-850: #2a2621;
+  --stone-900: #1f1c18;
+  --stone-950: #141210;
+  --stone-text-dark: #f2efe9;
+
+}
+
+:root,
+.light {
+  /* Semantic — light */
+  --background: var(--stone-25);
+  --foreground: var(--stone-900);
+  --card: var(--stone-0);
+  --card-foreground: var(--stone-900);
+  --popover: var(--stone-0);
+  --popover-foreground: var(--stone-900);
+  --primary: var(--teal-600);
+  --primary-hover: var(--teal-700);
+  --primary-foreground: var(--stone-0);
+  --secondary: var(--stone-100);
+  --secondary-foreground: var(--stone-800);
+  --muted: var(--stone-50);
+  --muted-foreground: var(--stone-600);
+  --accent: var(--teal-50);
+  --accent-foreground: var(--teal-700);
+  --destructive: #b42318;
+  --destructive-subtle: #fdecea;
+  --border: var(--stone-200);
+  --input: var(--stone-500);
+  --ring: var(--teal-500);
+
+  --highlight: var(--saffron-400);
+  --highlight-foreground: var(--stone-900);
+  --success: #1e7a45;
+  --success-subtle: #e8f5ec;
+  --warning: var(--saffron-700);
+  --warning-subtle: #fff4de;
+  --info: #1d5fa8;
+  --info-subtle: #e8f0fb;
+  --bubble-user: var(--teal-600);
+  --bubble-user-foreground: var(--stone-0);
+
+  --chart-1: var(--teal-600);
+  --chart-2: var(--saffron-500);
+  --chart-3: var(--teal-300);
+  --chart-4: var(--stone-500);
+  --chart-5: var(--saffron-200);
+
+  --sidebar: var(--stone-50);
+  --sidebar-foreground: var(--stone-900);
+  --sidebar-primary: var(--teal-600);
+  --sidebar-primary-foreground: var(--stone-0);
+  --sidebar-accent: var(--stone-100);
+  --sidebar-accent-foreground: var(--stone-900);
+  --sidebar-border: var(--stone-200);
+  --sidebar-ring: var(--teal-500);
+
+  --radius: 0.75rem;
+
+  --shadow-xs: 0 1px 2px rgb(31 28 24 / 0.05);
+  --shadow-sm: 0 1px 3px rgb(31 28 24 / 0.08), 0 1px 2px rgb(31 28 24 / 0.04);
+  --shadow-md: 0 4px 12px rgb(31 28 24 / 0.08), 0 2px 4px rgb(31 28 24 / 0.04);
+  --shadow-lg: 0 12px 32px rgb(31 28 24 / 0.12), 0 4px 8px rgb(31 28 24 / 0.05);
+}
+
+.dark {
+  --background: var(--stone-950);
+  --foreground: var(--stone-text-dark);
+  --card: var(--stone-900);
+  --card-foreground: var(--stone-text-dark);
+  --popover: var(--stone-900);
+  --popover-foreground: var(--stone-text-dark);
+  --primary: var(--teal-300);
+  --primary-hover: var(--teal-200);
+  --primary-foreground: var(--teal-950);
+  --secondary: var(--stone-800);
+  --secondary-foreground: var(--stone-text-dark);
+  --muted: var(--stone-850);
+  --muted-foreground: var(--stone-400);
+  --accent: var(--teal-900);
+  --accent-foreground: var(--teal-200);
+  --destructive: #f28b82;
+  --destructive-subtle: #3a1714;
+  --border: var(--stone-800);
+  --input: var(--stone-550);
+  --ring: var(--teal-300);
+
+  --highlight: var(--saffron-400);
+  --highlight-foreground: var(--stone-900);
+  --success: #6fcf97;
+  --success-subtle: #12301f;
+  --warning: var(--saffron-300);
+  --warning-subtle: #33240a;
+  --info: #8ab8f0;
+  --info-subtle: #13263d;
+  --bubble-user: var(--teal-300);
+  --bubble-user-foreground: var(--teal-950);
+
+  --chart-1: var(--teal-300);
+  --chart-2: var(--saffron-400);
+  --chart-3: var(--teal-500);
+  --chart-4: var(--stone-400);
+  --chart-5: var(--saffron-600);
+
+  --sidebar: var(--stone-900);
+  --sidebar-foreground: var(--stone-text-dark);
+  --sidebar-primary: var(--teal-300);
+  --sidebar-primary-foreground: var(--teal-950);
+  --sidebar-accent: var(--stone-800);
+  --sidebar-accent-foreground: var(--stone-text-dark);
+  --sidebar-border: var(--stone-800);
+  --sidebar-ring: var(--teal-300);
+
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.2);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.4), 0 2px 4px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.5), 0 4px 8px rgb(0 0 0 / 0.25);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
